@@ -14,7 +14,7 @@ if ($category) {
 }
 
 $services = $stmt->fetchAll(PDO::FETCH_ASSOC);
-$categories = ['servis' => 'Jasa Servis', 'desain' => 'Desain Grafis', 'jurnal' => 'Tulis Jurnal', 'editing' => 'Editing', 'translate' => 'Translate', 'website' => 'Website'];
+$categories = ['skripsi' => 'Skripsi', 'thesis' => 'Thesis', 'disertasi' => 'Disertasi'];
 ?>
 
 <section class="page-header">
@@ -49,14 +49,11 @@ $categories = ['servis' => 'Jasa Servis', 'desain' => 'Desain Grafis', 'jurnal' 
                 <?php foreach ($services as $service): 
                     $formattedPrice = number_format($service['price'], 0, ',', '.');
                     $iconMap = [
-                        'servis' => 'tools',
-                        'desain' => 'palette',
-                        'jurnal' => 'file-alt',
-                        'editing' => 'edit',
-                        'translate' => 'language',
-                        'website' => 'globe'
+                        'skripsi' => 'graduation-cap',
+                        'thesis' => 'book',
+                        'disertasi' => 'university'
                     ];
-                    $icon = $iconMap[$service['category']] ?? 'star';
+                    $icon = $iconMap[$service['category']] ?? 'file-alt';
                 ?>
                     <div class="service-item-card">
                         <div class="service-item-icon">

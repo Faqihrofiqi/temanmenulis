@@ -7,19 +7,32 @@
  */
 function generateQRISString($orderId, $amount, $merchantName = null) {
     $merchantName = $merchantName ?: QRIS_NAME;
-    $amountFormatted = number_format($amount, 0, '', '');
     
-    // Generate QRIS string (simplified version)
-    // Format: 000201010212 + merchant info + amount + checksum
-    // Note: Ini adalah format sederhana, untuk production gunakan library QRIS yang proper
+    // Generate QRIS string yang lebih sederhana dan bisa di-scan
+    // Format: Menggunakan format yang lebih universal untuk e-wallet Indonesia
+    // Untuk QRIS yang bisa di-scan, kita gunakan format yang lebih sederhana
     
+    // Format alternatif: Menggunakan nomor rekening/QRIS + informasi pembayaran
+    // Ini akan menghasilkan QR code yang berisi informasi untuk transfer manual
+    $paymentInfo = array(
+        'merchant' => $merchantName,
+        'account' => QRIS_NUMBER,
+        'amount' => $amount,
+        'order_id' => $orderId,
+        'bank' => defined('QRIS_BANK') ? QRIS_BANK : ''
+    );
+    
+    // Generate string untuk QR code (format JSON sederhana yang bisa di-parse)
+    $qrString = json_encode($paymentInfo);
+    
+    // Atau gunakan format yang lebih sederhana untuk e-wallet
+    // Format: "PAY:merchant_name:account:amount:order_id"
     $qrString = sprintf(
-        '00020101021226650009%s0118936009%s0215%s030393274041404%s5802ID5913%s6014Jakarta Pusat61051234563040140',
-        substr($merchantName, 0, 9),
+        'PAY:%s:%s:%s:%s',
+        urlencode($merchantName),
         QRIS_NUMBER,
-        $merchantName,
-        $amountFormatted,
-        substr($merchantName, 0, 13)
+        number_format($amount, 0, '', ''),
+        $orderId
     );
     
     return $qrString;

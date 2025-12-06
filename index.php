@@ -8,12 +8,12 @@ include 'includes/header.php';
     <div class="container">
         <div class="hero-content">
             <h1 class="hero-title">
-                <span class="gradient-text">Jasa Profesional</span>
-                Terpercaya untuk Kebutuhan Anda
+                <span class="gradient-text">REVISI SAMPAI ACC</span>
+                Pendamping Akademik Terpercaya
             </h1>
             <p class="hero-description">
-                Platform terpercaya untuk berbagai jasa profesional mulai dari servis, desain grafis, 
-                penulisan jurnal, hingga layanan digital lainnya. Kualitas terjamin, harga terjangkau.
+                Spesialis #1 menemani kamu mengerjakan karya ilmiah yang berkualitas. 
+                Layanan penulisan Skripsi, Thesis, dan Disertasi dengan garansi revisi sampai ACC.
             </p>
             <div class="hero-stats">
                 <div class="stat-item">
@@ -56,10 +56,16 @@ include 'includes/header.php';
             
             foreach ($services as $service) {
                 $formattedPrice = number_format($service['price'], 0, ',', '.');
+                $iconMap = [
+                    'skripsi' => 'graduation-cap',
+                    'thesis' => 'book',
+                    'disertasi' => 'university'
+                ];
+                $icon = $iconMap[$service['category']] ?? 'file-alt';
                 echo '
                 <div class="service-card">
                     <div class="service-icon">
-                        <i class="fas fa-' . ($service['category'] == 'servis' ? 'tools' : ($service['category'] == 'desain' ? 'palette' : 'file-alt')) . '"></i>
+                        <i class="fas fa-' . $icon . '"></i>
                     </div>
                     <h3 class="service-name">' . htmlspecialchars($service['name']) . '</h3>
                     <p class="service-description">' . htmlspecialchars($service['description']) . '</p>

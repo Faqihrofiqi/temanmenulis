@@ -98,8 +98,13 @@ include 'includes/header.php';
                 <div class="qris-container">
                     <div class="qris-code">
                         <?php if (!empty($qrisString)): ?>
-                            <div id="qris-qr-code"></div>
-                            <p class="qris-instruction">Scan QRIS ini menggunakan aplikasi e-wallet atau mobile banking Anda</p>
+                            <div id="qris-qr-code" style="min-height: 300px; display: flex; align-items: center; justify-content: center; background: white; border-radius: 0.75rem; margin-bottom: 1rem;">
+                                <div style="text-align: center; padding: 1rem;">
+                                    <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #0ea5e9;"></i>
+                                    <p style="margin-top: 1rem; color: #64748b;">Memuat QR Code...</p>
+                                </div>
+                            </div>
+                            <p class="qris-instruction">Scan QR Code di atas atau gunakan informasi rekening di bawah untuk transfer manual</p>
                             
                             <div class="payment-info-box">
                                 <h4>Informasi Pembayaran</h4>
@@ -151,7 +156,7 @@ include 'includes/header.php';
                         <button class="btn-primary" onclick="checkPaymentStatus()" style="margin-top: 1rem;">
                             <i class="fas fa-sync-alt"></i> Cek Status Pembayaran
                         </button>
-                        <a href="<?php echo SITE_URL; ?>/check-order.php" class="btn-outline" style="margin-top: 0.75rem; display: inline-block;">
+                        <a href="<?php echo asset_url('check-order.php'); ?>" class="btn-outline" style="margin-top: 0.75rem; display: inline-block;">
                             <i class="fas fa-search"></i> Cek Pesanan Lain
                         </a>
                     </div>
@@ -167,20 +172,29 @@ include 'includes/header.php';
     var qrisString = '<?php echo addslashes($qrisString); ?>';
     
     // Generate QR Code
-    if (qrisString) {
-        QRCode.toCanvas(document.getElementById('qris-qr-code'), qrisString, {
-            width: 300,
-            margin: 2,
-            color: {
-                dark: '#0f172a',
-                light: '#ffffff'
-            }
-        }, function (error) {
-            if (error) {
-                console.error('QR Code generation error:', error);
-                document.getElementById('qris-qr-code').innerHTML = '<p style="color: red;">Gagal membuat QR Code</p>';
-            }
-        });
+    if (qrisString && typeof QRCode !== 'undefined') {
+        var qrElement = document.getElementById('qris-qr-code');
+        if (qrElement) {
+            QRCode.toCanvas(qrElement, qrisString, {
+                width: 300,
+                margin: 2,
+                color: {
+                    dark: '#0f172a',
+                    light: '#ffffff'
+                }
+            }, function (error) {
+                if (error) {
+                    console.error('QR Code generation error:', error);
+                    qrElement.innerHTML = '<div style="padding: 2rem; text-align: center;"><i class="fas fa-exclamation-triangle" style="font-size: 3rem; color: #f59e0b; margin-bottom: 1rem;"></i><p style="color: #92400e;">Gagal membuat QR Code. Silakan gunakan informasi rekening di bawah ini untuk transfer manual.</p></div>';
+                }
+            });
+        }
+    } else {
+        // Fallback jika QRCode library tidak ter-load
+        var qrElement = document.getElementById('qris-qr-code');
+        if (qrElement) {
+            qrElement.innerHTML = '<div style="padding: 2rem; text-align: center;"><i class="fas fa-info-circle" style="font-size: 3rem; color: #0ea5e9; margin-bottom: 1rem;"></i><p>Gunakan informasi rekening di bawah ini untuk transfer manual.</p></div>';
+        }
     }
     
     // Auto check payment status every 10 seconds (less frequent for manual system)
@@ -195,15 +209,16 @@ include 'includes/header.php';
             return;
         }
         
-        fetch('<?php echo SITE_URL; ?>/check-payment-status.php?order_id=' + orderId)
+        fetch('<?php echo asset_url('check-payment-status.php'); ?>?order_id=' + orderId)
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'settlement' || data.status === 'capture') {
                     clearInterval(statusCheckInterval);
-                    window.location.href = '<?php echo SITE_URL; ?>/payment-success.php?order_id=' + orderId;
+                    clearInterval(statusCheckInterval);
+                    window.location.href = '<?php echo asset_url('payment-success.php'); ?>?order_id=' + orderId;
                 } else if (data.status === 'expire' || data.status === 'cancel') {
                     clearInterval(statusCheckInterval);
-                    window.location.href = '<?php echo SITE_URL; ?>/payment-failed.php?order_id=' + orderId;
+                    window.location.href = '<?php echo asset_url('payment-failed.php'); ?>?order_id=' + orderId;
                 }
             })
             .catch(error => {

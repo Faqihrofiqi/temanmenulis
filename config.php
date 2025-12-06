@@ -7,7 +7,12 @@ define('DB_NAME', 'temanmenulis');
 
 // Site Configuration
 define('SITE_NAME', 'TemanMenulis');
-define('SITE_URL', 'http://localhost/temanmenulis');
+define('SITE_URL', 'http://localhost/temanmenulis/');
+
+// Asset URL helper function
+function asset_url($path) {
+    return SITE_URL . $path;
+}
 
 // Payment Configuration (Manual QRIS)
 define('QRIS_NUMBER', '081234567890'); // Nomor rekening/QRIS untuk pembayaran
@@ -68,17 +73,52 @@ function initDatabase() {
     $stmt = $conn->query("SELECT COUNT(*) FROM services");
     if ($stmt->fetchColumn() == 0) {
         $services = [
-            ['Jasa Servis Laptop/PC', 'Perbaikan dan maintenance laptop/PC Anda dengan teknisi berpengalaman', 150000, 'servis', 'servis.jpg'],
-            ['Desain Grafis', 'Desain logo, banner, poster, dan media promosi lainnya', 200000, 'desain', 'desain.jpg'],
-            ['Tulis Jurnal Ilmiah', 'Jasa penulisan jurnal ilmiah sesuai standar akademik', 500000, 'jurnal', 'jurnal.jpg'],
-            ['Jasa Editing & Proofreading', 'Editing dan proofreading dokumen akademik atau bisnis', 100000, 'editing', 'editing.jpg'],
-            ['Desain Website', 'Pembuatan website modern dan responsive', 3000000, 'desain', 'website.jpg'],
-            ['Jasa Translate', 'Terjemahan dokumen profesional', 150000, 'translate', 'translate.jpg']
+            // Skripsi Packages
+            ['SEMPRO SKRIPSI', 'Proposal BAB 1-3', 799000, 'skripsi', 'skripsi.jpg'],
+            ['SEMHAS SKRIPSI', 'Pembahasan BAB 4-5', 1499000, 'skripsi', 'skripsi.jpg'],
+            ['WISUDA SKRIPSI', 'FullBab 1-5 Skripsi', 2499000, 'skripsi', 'skripsi.jpg'],
+            ['WISUDA++ SKRIPSI', 'FullBab 1-5 dan Full Bimbingan', 2699000, 'skripsi', 'skripsi.jpg'],
+            // Thesis Packages
+            ['SEMPRO THESIS', 'Proposal BAB 1-3', 1499000, 'thesis', 'thesis.jpg'],
+            ['SEMHAS THESIS', 'Pembahasan BAB 4-5', 1999000, 'thesis', 'thesis.jpg'],
+            ['WISUDA++ THESIS', 'FullBab 1-6', 2599000, 'thesis', 'thesis.jpg'],
+            ['WISUDA+++ THESIS', 'FullBab 1-6 dan Full Bimbingan', 3099000, 'thesis', 'thesis.jpg'],
+            // Disertasi Packages
+            ['TES MASUK DISERTASI', 'Proposal BAB 1', 1199000, 'disertasi', 'disertasi.jpg'],
+            ['SEMPRO DISERTASI', 'Proposal BAB 1-3', 2899000, 'disertasi', 'disertasi.jpg'],
+            ['SEMHAS DISERTASI', 'Pembahasan BAB 4-5', 4099000, 'disertasi', 'disertasi.jpg'],
+            ['WISUDA DISERTASI', 'FullBAB 1-5', 6099000, 'disertasi', 'disertasi.jpg']
         ];
         
         $stmt = $conn->prepare("INSERT INTO services (name, description, price, category, image) VALUES (?, ?, ?, ?, ?)");
         foreach ($services as $service) {
             $stmt->execute($service);
+        }
+    } else {
+        // Update existing services to match new packages
+        $updateServices = [
+            // Skripsi Packages
+            ['SEMPRO SKRIPSI', 'Proposal BAB 1-3', 799000, 'skripsi'],
+            ['SEMHAS SKRIPSI', 'Pembahasan BAB 4-5', 1499000, 'skripsi'],
+            ['WISUDA SKRIPSI', 'FullBab 1-5 Skripsi', 2499000, 'skripsi'],
+            ['WISUDA++ SKRIPSI', 'FullBab 1-5 dan Full Bimbingan', 2699000, 'skripsi'],
+            // Thesis Packages
+            ['SEMPRO THESIS', 'Proposal BAB 1-3', 1499000, 'thesis'],
+            ['SEMHAS THESIS', 'Pembahasan BAB 4-5', 1999000, 'thesis'],
+            ['WISUDA++ THESIS', 'FullBab 1-6', 2599000, 'thesis'],
+            ['WISUDA+++ THESIS', 'FullBab 1-6 dan Full Bimbingan', 3099000, 'thesis'],
+            // Disertasi Packages
+            ['TES MASUK DISERTASI', 'Proposal BAB 1', 1199000, 'disertasi'],
+            ['SEMPRO DISERTASI', 'Proposal BAB 1-3', 2899000, 'disertasi'],
+            ['SEMHAS DISERTASI', 'Pembahasan BAB 4-5', 4099000, 'disertasi'],
+            ['WISUDA DISERTASI', 'FullBAB 1-5', 6099000, 'disertasi']
+        ];
+        
+        // Delete all existing services and insert new ones
+        $conn->exec("DELETE FROM services");
+        $stmt = $conn->prepare("INSERT INTO services (name, description, price, category, image) VALUES (?, ?, ?, ?, ?)");
+        foreach ($updateServices as $service) {
+            $stmt->execute([$service[0], $service[1], $service[2], $service[3], strtolower($service[3]) . '.jpg']);
         }
     }
 }

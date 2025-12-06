@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($pageTitle) ? $pageTitle . ' - ' : ''; ?><?php echo SITE_NAME; ?></title>
-    <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo asset_url('assets/css/style.css'); ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
             <div class="container">
                 <div class="nav-wrapper">
                     <div class="logo">
-                        <i class="fas fa-pen-fancy"></i>
+                        <img src="<?php echo SITE_URL; ?>assets/TEMANNULISMU .png" alt="<?php echo SITE_NAME; ?>" class="logo-image">
                         <span><?php echo SITE_NAME; ?></span>
                     </div>
                     <ul class="nav-menu" id="navMenu">
@@ -27,10 +27,9 @@
                         <li class="dropdown">
                             <a href="#" class="nav-link">Layanan <i class="fas fa-chevron-down"></i></a>
                             <ul class="dropdown-menu">
-                                <li><a href="<?php echo SITE_URL; ?>/services.php?category=servis">Jasa Servis</a></li>
-                                <li><a href="<?php echo SITE_URL; ?>/services.php?category=desain">Desain Grafis</a></li>
-                                <li><a href="<?php echo SITE_URL; ?>/services.php?category=jurnal">Tulis Jurnal</a></li>
-                                <li><a href="<?php echo SITE_URL; ?>/services.php?category=editing">Editing</a></li>
+                                <li><a href="<?php echo SITE_URL; ?>/services.php?category=skripsi">Skripsi</a></li>
+                                <li><a href="<?php echo SITE_URL; ?>/services.php?category=thesis">Thesis</a></li>
+                                <li><a href="<?php echo SITE_URL; ?>/services.php?category=disertasi">Disertasi</a></li>
                             </ul>
                         </li>
                     </ul>

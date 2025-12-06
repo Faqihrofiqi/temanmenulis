@@ -1,7 +1,10 @@
 # Enable Rewrite Engine
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /temanmenulis/
+    
+    # Allow direct access to assets (CSS, JS, images, fonts)
+    RewriteCond %{REQUEST_URI} \.(css|js|jpg|jpeg|png|gif|svg|ico|woff|woff2|ttf|eot)$ [NC]
+    RewriteRule ^ - [L]
     
     # Redirect to index.php if file/directory doesn't exist
     RewriteCond %{REQUEST_FILENAME} !-f

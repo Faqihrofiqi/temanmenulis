@@ -48,7 +48,7 @@
             </div>
         </div>
     </footer>
-    <script src="<?php echo SITE_URL; ?>/assets/js/main.js"></script>
+    <script src="<?php echo asset_url('assets/js/main.js'); ?>"></script>
     <?php if (isset($additionalScripts)) echo $additionalScripts; ?>
 </body>
 </html>
