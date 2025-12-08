@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateOrderStatusRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'status' => ['required', 'in:pending,paid,processing,completed,cancelled'],
+            'payment_status' => ['nullable', 'in:pending,waiting_for_capture,settlement,cancel,expire'],
+            'internal_notes' => ['nullable', 'string'],
+            'paid_at' => ['nullable', 'date'],
+        ];
+    }
+}
