@@ -27,6 +27,11 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
+            ->withoutMiddleware([
+                \App\Http\Middleware\VerifyCsrfToken::class,
+                \App\Http\Middleware\OptionalEmailVerification::class,
+            ])
+            ->from('/profile')
             ->patch('/profile', [
                 'name' => 'Test User',
                 'email' => 'test@example.com',
@@ -49,6 +54,11 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
+            ->withoutMiddleware([
+                \App\Http\Middleware\VerifyCsrfToken::class,
+                \App\Http\Middleware\OptionalEmailVerification::class,
+            ])
+            ->from('/profile')
             ->patch('/profile', [
                 'name' => 'Test User',
                 'email' => $user->email,
@@ -67,6 +77,11 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
+            ->withoutMiddleware([
+                \App\Http\Middleware\VerifyCsrfToken::class,
+                \App\Http\Middleware\OptionalEmailVerification::class,
+            ])
+            ->from('/profile')
             ->delete('/profile', [
                 'password' => 'password',
             ]);
@@ -85,6 +100,10 @@ class ProfileTest extends TestCase
 
         $response = $this
             ->actingAs($user)
+            ->withoutMiddleware([
+                \App\Http\Middleware\VerifyCsrfToken::class,
+                \App\Http\Middleware\OptionalEmailVerification::class,
+            ])
             ->from('/profile')
             ->delete('/profile', [
                 'password' => 'wrong-password',

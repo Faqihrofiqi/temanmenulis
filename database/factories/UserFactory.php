@@ -33,6 +33,13 @@ class UserFactory extends Factory
             'role' => User::ROLE_USER,
             'phone' => fake()->phoneNumber(),
             'avatar_path' => null,
+            'institution' => fake()->company().' University',
+            'study_program' => fake()->randomElement(['Teknik Informatika', 'Hukum', 'Manajemen Bisnis']),
+            'city' => fake()->city(),
+            'student_id' => strtoupper(fake()->bothify('DL####')), 
+            'linkedin_url' => 'https://linkedin.com/in/'.Str::slug(fake()->name()),
+            'profile_verification_status' => User::PROFILE_STATUS_VERIFIED,
+            'profile_verified_at' => now(),
         ];
     }
 

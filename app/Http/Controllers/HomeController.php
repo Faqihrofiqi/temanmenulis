@@ -10,6 +10,7 @@ class HomeController extends Controller
     {
         $services = Service::query()
             ->where('is_active', true)
+            ->orderByPromo()
             ->orderByDesc('is_featured')
             ->orderBy('price')
             ->take(6)

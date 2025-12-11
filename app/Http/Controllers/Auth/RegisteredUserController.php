@@ -41,7 +41,13 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        // Only send verification email if bypass is not active
+        if (!config('app.bypass_email', false)) {
+            event(new Registered($user));
+        } else {
+            // Mark email as verified when bypass is active
+            $user->update(['email_verified_at' => now()]);
+        }
 
         Auth::login($user);
 

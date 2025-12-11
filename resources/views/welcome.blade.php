@@ -117,38 +117,43 @@
                                     </dl>
                                 </div>
                                 <div class="relative">
-                                    <div class="rounded-3xl border border-white/5 bg-white/5 p-6 shadow-2xl shadow-indigo-900/30">
-                                        <div class="rounded-2xl bg-slate-900/80 p-6">
-                                            <p class="text-xs font-semibold tracking-[0.35em] text-amber-300">Realtime Monitor</p>
-                                            <p class="mt-4 text-3xl font-semibold text-white">Pipeline TemanMenulis</p>
-                                            <p class="mt-2 text-sm text-slate-400">Status sources: API Laravel, Node worker, pembayaran QRIS</p>
-                                            <div class="mt-6 space-y-4">
-                                                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
-                                                    <div class="flex items-center justify-between text-sm">
-                                                        <span class="font-medium text-white">Webhook QRIS</span>
-                                                        <span class="text-emerald-300">200 OK</span>
-                                                    </div>
-                                                    <p class="mt-1 text-xs text-slate-400">Sinkron otomatis setelah pembayaran</p>
-                                                </div>
-                                                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
-                                                    <div class="flex items-center justify-between text-sm">
-                                                        <span class="font-medium text-white">Worker Node</span>
-                                                        <span class="text-sky-300">Queued (2)</span>
-                                                    </div>
-                                                    <p class="mt-1 text-xs text-slate-400">Pengiriman materi &amp; pembaruan progres</p>
-                                                </div>
-                                                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
-                                                    <div class="flex items-center justify-between text-sm">
-                                                        <span class="font-medium text-white">Ticket Support</span>
-                                                        <span class="text-fuchsia-200">3 balasan baru</span>
-                                                    </div>
-                                                    <p class="mt-1 text-xs text-slate-400">Tersambung ke API tiket Deadlineku</p>
-                                                </div>
+                                    <div class="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-indigo-900/40">
+                                        <div class="flex flex-col gap-2 rounded-2xl border border-white/10 bg-white/5 px-6 py-5 text-white">
+                                            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-amber-200">Studio visual</p>
+                                            <p class="text-3xl font-semibold">Kolase pipeline TemanMenulis</p>
+                                            <p class="text-sm text-slate-300">Mimic estetika situs hosting: kartu ini kini memajang footage workspace, bukan lagi daftar teks.</p>
+                                        </div>
+                                        <div class="mt-8 space-y-4">
+                                            <figure class="group relative overflow-hidden rounded-[30px] border border-white/10 bg-white/5">
+                                                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80" alt="Tim kreatif mengulas dashboard proyek" class="h-64 w-full object-cover transition duration-700 group-hover:scale-105">
+                                                <figcaption class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-slate-950/80 via-slate-900/10 to-transparent p-6 text-white">
+                                                    <p class="text-xs font-semibold tracking-[0.4em] text-white/70">Ops Center</p>
+                                                    <p class="mt-2 text-2xl font-semibold">Realtime orchestration</p>
+                                                    <p class="mt-1 text-sm text-white/80">Layer insight untuk order, ticket, dan pembayaran.</p>
+                                                </figcaption>
+                                            </figure>
+                                            <div class="grid gap-4 sm:grid-cols-2">
+                                                <figure class="group relative overflow-hidden rounded-[24px] border border-white/10 bg-white/5">
+                                                    <img src="https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?auto=format&fit=crop&w=800&q=80" alt="Ruang kerja dengan perangkat keras modern" class="h-48 w-full object-cover transition duration-700 group-hover:scale-105">
+                                                    <figcaption class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-slate-950/80 via-slate-900/10 to-transparent p-5 text-white">
+                                                        <p class="text-xs uppercase tracking-[0.35em] text-white/70">Node worker</p>
+                                                        <p class="mt-1 text-lg font-semibold">Queue orchestration</p>
+                                                    </figcaption>
+                                                </figure>
+                                                <figure class="group relative overflow-hidden rounded-[24px] border border-white/10 bg-white/5">
+                                                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80" alt="Dashboard cloud penuh grafik" class="h-48 w-full object-cover transition duration-700 group-hover:scale-105">
+                                                    <figcaption class="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-slate-950/80 via-slate-900/10 to-transparent p-5 text-white">
+                                                        <p class="text-xs uppercase tracking-[0.35em] text-white/70">Client hub</p>
+                                                        <p class="mt-1 text-lg font-semibold">Status ticket & SLA</p>
+                                                    </figcaption>
+                                                </figure>
                                             </div>
                                         </div>
-                                        <div class="mt-4 rounded-2xl bg-white/10 p-4 text-sm text-slate-200">
-                                            <p class="font-semibold">Rilis Desember 2025</p>
-                                            <p class="mt-1 text-slate-300">UI ini dibangun ulang dengan Tailwind + Alpine sehingga mudah di-porting ke Laravel Mix/Vite maupun Node SSR.</p>
+                                        <div class="mt-6 flex flex-wrap gap-2 text-xs text-white/80">
+                                            <span class="rounded-full border border-white/20 px-3 py-1">Tailwind + Alpine</span>
+                                            <span class="rounded-full border border-white/20 px-3 py-1">TemanMenulis API</span>
+                                            <span class="rounded-full border border-white/20 px-3 py-1">QRIS manual</span>
+                                            <span class="rounded-full border border-white/20 px-3 py-1">Ticket orchestration</span>
                                         </div>
                                     </div>
                                 </div>

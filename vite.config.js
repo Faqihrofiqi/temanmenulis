@@ -11,7 +11,8 @@ export default defineConfig({
 
     server: {
         // Menjamin Vite mendengarkan di semua antarmuka jaringan
-        host: '192.168.1.88',
+        host: '192.168.18.6',
+        // host: '192.168.1.88',
         // Opsional: Tentukan port jika Anda membutuhkannya (defaultnya 5173)
         clientPort: 5173,
     },

@@ -43,6 +43,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Email Verification Bypass
+    |--------------------------------------------------------------------------
+    |
+    | When set to true, email verification will be bypassed for testing purposes.
+    | This allows testing UI without needing to verify emails or modify database.
+    |
+    */
+
+    'bypass_email' => (bool) env('BYPASS_EMAIL', false),
+
+    /*
+    |--------------------------------------------------------------------------
     | Application URL
     |--------------------------------------------------------------------------
     |

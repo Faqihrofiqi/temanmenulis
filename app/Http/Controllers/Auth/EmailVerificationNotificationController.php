@@ -17,6 +17,13 @@ class EmailVerificationNotificationController extends Controller
             return redirect()->intended(route('dashboard', absolute: false));
         }
 
+        // Don't send verification emails when bypass is active
+        if (config('app.bypass_email', false)) {
+            // Mark email as verified instead
+            $request->user()->update(['email_verified_at' => now()]);
+            return redirect()->intended(route('dashboard', absolute: false));
+        }
+
         $request->user()->sendEmailVerificationNotification();
 
         return back()->with('status', 'verification-link-sent');

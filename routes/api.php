@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\MidtransWebhookController;
 use App\Http\Controllers\Api\OrderController as ApiOrderController;
-use App\Http\Controllers\Api\QrisWebhookController;
 use App\Http\Controllers\Api\ServiceController as ApiServiceController;
 use App\Http\Controllers\Api\TicketController as ApiTicketController;
 use Illuminate\Http\Request;
@@ -24,4 +24,4 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/tickets/{ticket:code}/messages', [ApiTicketController::class, 'storeMessage']);
 });
 
-Route::post('/qris/webhook', QrisWebhookController::class)->name('api.qris.webhook');
+Route::post('/midtrans/notification', MidtransWebhookController::class)->name('api.midtrans.webhook');

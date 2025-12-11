@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -55,6 +56,16 @@ class Service extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
+    }
+
+    public function scopeOrderByPromo(Builder $query): Builder
+    {
+        $now = now();
+
+        return $query->orderByRaw(
+            "CASE WHEN discount_percentage IS NOT NULL AND discount_percentage > 0 AND (discount_ends_at IS NULL OR discount_ends_at > ?) THEN 0 ELSE 1 END",
+            [$now]
+        );
     }
 
     public function hasActiveDiscount(): bool

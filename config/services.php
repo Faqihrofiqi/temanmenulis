@@ -35,4 +35,17 @@ return [
         ],
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', env('APP_URL') . '/auth/google/callback'),
+    ],
+
+    'mailtrap' => [
+        'api_key' => env('MAILTRAP_API_KEY'),
+        'template_uuid' => env('MAILTRAP_TEMPLATE_UUID', '93849317-b254-40a9-9004-9f4b4b895b37'),
+        'from_email' => env('MAILTRAP_FROM_EMAIL', 'hello@digital-dev.icu'),
+        'from_name' => env('MAILTRAP_FROM_NAME', 'Deadlineku'),
+    ],
+
 ];

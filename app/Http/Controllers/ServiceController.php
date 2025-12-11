@@ -14,10 +14,20 @@ class ServiceController extends Controller
         $services = Service::query()
             ->when($category, fn ($query) => $query->where('category', $category))
             ->where('is_active', true)
+            ->orderByPromo()
             ->orderByDesc('is_featured')
             ->orderBy('price')
             ->paginate(9)
             ->withQueryString();
+
+        $promoHighlights = Service::query()
+            ->where('is_active', true)
+            ->whereNotNull('discount_percentage')
+            ->where('discount_percentage', '>', 0)
+            ->where(fn ($query) => $query->whereNull('discount_ends_at')->orWhere('discount_ends_at', '>', now()))
+            ->orderByDesc('discount_percentage')
+            ->take(4)
+            ->get();
 
         $categories = Service::query()
             ->select('category')
@@ -30,6 +40,7 @@ class ServiceController extends Controller
             'services' => $services,
             'categories' => $categories,
             'category' => $category,
+            'promoHighlights' => $promoHighlights,
             'title' => 'Katalog Layanan — Deadlineku',
         ]);
     }

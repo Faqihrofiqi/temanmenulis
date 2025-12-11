@@ -8,15 +8,16 @@ use App\Http\Requests\UpdateOrderStatusRequest;
 use App\Models\Order;
 use App\Models\Service;
 use App\Models\User;
-use App\Services\Qris\QrisService;
+use App\Services\Midtrans\SnapService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    public function store(StoreOrderRequest $request, QrisService $qrisService): JsonResponse
+    public function store(StoreOrderRequest $request, SnapService $snapService): JsonResponse
     {
         $data = $request->validated();
+        $paymentChannel = $data['payment_channel'] ?? 'bank_transfer';
 
         $service = Service::query()
             ->whereKey($data['service_id'])
@@ -29,17 +30,27 @@ class OrderController extends Controller
             'customer_email' => $data['customer_email'],
             'customer_phone' => $data['customer_phone'],
             'order_details' => $data['order_details'] ?? null,
-            'metadata' => $data['metadata'] ?? null,
-            'amount' => $service->price,
+            'metadata' => array_merge((array) ($data['metadata'] ?? []), [
+                'source' => 'api',
+                'payment_channel' => $paymentChannel,
+                'applied_discount' => $service->has_active_discount ? [
+                    'percentage' => $service->discount_percentage,
+                    'label' => $service->discount_label,
+                ] : null,
+            ]),
+            'amount' => $service->effective_price,
             'status' => 'pending',
             'payment_status' => 'pending',
         ]);
 
         $order->load('service');
+        $snapPayload = $snapService->getOrCreateTransaction($order, [
+            'payment_channel' => $paymentChannel,
+        ]);
 
         return response()->json([
             'data' => $order,
-            'qris' => $qrisService->generatePayload($order),
+            'snap' => $snapPayload,
         ], 201);
     }
 

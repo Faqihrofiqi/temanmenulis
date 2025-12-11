@@ -3,8 +3,8 @@
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
                 <p class="text-xs uppercase tracking-[0.45em] text-slate-400">Menu Pesan</p>
-                <h1 class="mt-2 text-3xl font-semibold text-white">Mulai pesanan baru & pilih metode pembayaran</h1>
-                <p class="mt-1 text-sm text-slate-400">Kamu bisa checkout melalui transfer semua bank (Midtrans) atau QRIS API instan.</p>
+                <h1 class="mt-2 text-3xl font-semibold text-white">Mulai pesanan baru</h1>
+                <p class="mt-1 text-sm text-slate-400">Lengkapi detail pesanan dan lanjutkan ke pembayaran Midtrans Snap untuk pengalaman checkout yang lebih baik.</p>
             </div>
             <a href="{{ route('orders.check') }}" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-4 py-2 text-sm font-semibold text-white transition hover:border-white/60">
                 <span class="size-2 rounded-full bg-emerald-400"></span>
@@ -68,48 +68,12 @@
                     </div>
 
                     @php
-                        $paymentChoice = old('payment_channel', 'bank_transfer');
                         $bankTransfer = config('payments.bank_transfer');
-                        $qrisConfig = config('qris');
                     @endphp
 
-                    <div>
-                        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-400">Metode pembayaran</p>
-                        <div class="mt-4 grid gap-4 md:grid-cols-2">
-                            <label class="relative flex h-full flex-col gap-3 rounded-3xl border px-4 py-5 {{ $paymentChoice === 'bank_transfer' ? 'border-indigo-400 bg-slate-900/80' : 'border-white/10 bg-slate-900/40 hover:border-white/40' }}">
-                                <input type="radio" name="payment_channel" value="bank_transfer" class="sr-only" {{ $paymentChoice === 'bank_transfer' ? 'checked' : '' }}>
-                                <div class="flex items-center justify-between text-sm text-slate-300">
-                                    <p class="font-semibold text-white">Transfer Semua Bank</p>
-                                    <span class="rounded-full border border-white/20 px-3 py-1 text-xs">Midtrans VA</span>
-                                </div>
-                                <p class="text-sm text-slate-400">{{ $bankTransfer['description'] ?? 'Bayar via virtual account yang mendukung BCA, BNI, Mandiri, dan bank lain.' }}</p>
-                                <ul class="space-y-1 text-xs text-slate-500">
-                                    <li>• Mendukung mobile banking & ATM</li>
-                                    <li>• Bukti otomatis dikirim ke dashboard</li>
-                                </ul>
-                            </label>
-
-                            <label class="relative flex h-full flex-col gap-3 rounded-3xl border px-4 py-5 {{ $paymentChoice === 'qris' ? 'border-indigo-400 bg-slate-900/80' : 'border-white/10 bg-slate-900/40 hover:border-white/40' }}">
-                                <input type="radio" name="payment_channel" value="qris" class="sr-only" {{ $paymentChoice === 'qris' ? 'checked' : '' }}>
-                                <div class="flex items-center justify-between text-sm text-slate-300">
-                                    <p class="font-semibold text-white">QRIS API Instan</p>
-                                    <span class="rounded-full border border-white/20 px-3 py-1 text-xs">QR Code</span>
-                                </div>
-                                <p class="text-sm text-slate-400">Scan kode QR dengan aplikasi favorit kamu untuk konfirmasi real-time.</p>
-                                <div class="text-xs text-slate-500">
-                                    <p>Nomor: {{ $qrisConfig['number'] }}</p>
-                                    <p>Nama: {{ $qrisConfig['name'] }}</p>
-                                </div>
-                            </label>
-                        </div>
-                        @error('payment_channel')
-                            <p class="mt-2 text-sm text-rose-400">{{ $message }}</p>
-                        @enderror
-                    </div>
-
                     <div class="flex flex-col gap-3 rounded-3xl border border-white/10 bg-slate-900/40 p-4 text-sm text-slate-400">
-                        <p class="text-white">Tips:</p>
-                        <p>Setelah submit, kamu akan diarahkan ke halaman pembayaran untuk menampilkan QRIS & detail transfer Midtrans.</p>
+                        <p class="text-white">Pembayaran:</p>
+                        <p>Setelah submit, kamu akan diarahkan ke halaman pembayaran Midtrans Snap yang mendukung semua metode pembayaran (transfer bank, QRIS, e-wallet).</p>
                         <p>Butuh bantuan? Hubungi kami di <span class="text-white">{{ $bankTransfer['support_contact'] ?? 'support@deadlineku.id' }}</span>.</p>
                     </div>
 

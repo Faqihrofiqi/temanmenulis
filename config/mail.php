@@ -79,6 +79,10 @@ return [
             'transport' => 'array',
         ],
 
+        'bypass' => [
+            'transport' => 'log', // Use log transport when bypass is active
+        ],
+
         'failover' => [
             'transport' => 'failover',
             'mailers' => [

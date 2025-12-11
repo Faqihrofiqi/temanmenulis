@@ -27,7 +27,6 @@ class StoreOrderRequest extends FormRequest
             'customer_email' => ['required', 'email:rfc,dns'],
             'customer_phone' => ['required', 'string', 'max:30'],
             'order_details' => ['nullable', 'string'],
-            'payment_channel' => ['required', 'in:bank_transfer,qris'],
             'metadata' => ['nullable', 'array'],
         ];
     }

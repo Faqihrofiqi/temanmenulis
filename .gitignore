@@ -25,3 +25,9 @@ Thumbs.db
 
 temanmenulis
 temanmenulis/s
+
+*.zip
+create_*.php
+fix_env.php
+add_*.php
+GOOGLE_*.md

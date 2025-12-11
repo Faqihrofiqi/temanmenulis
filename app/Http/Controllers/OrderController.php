@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreOrderRequest;
 use App\Models\Order;
 use App\Models\Service;
-use App\Services\Qris\QrisService;
+use App\Services\Midtrans\SnapService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 
 class OrderController extends Controller
 {
-    public function __construct(private readonly QrisService $qrisService)
+    public function __construct(private readonly SnapService $snapService)
     {
     }
 
@@ -35,7 +37,6 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request): RedirectResponse
     {
         $service = Service::findOrFail($request->integer('service_id'));
-        $paymentChannel = $request->input('payment_channel', 'qris');
 
         $order = Order::create([
             'service_id' => $service->id,
@@ -45,9 +46,9 @@ class OrderController extends Controller
             'customer_phone' => $request->input('customer_phone'),
             'order_details' => $request->input('order_details'),
             'amount' => $service->effective_price,
-            'metadata' => array_merge($request->input('metadata', []), [
+            'metadata' => array_merge((array) $request->input('metadata', []), [
                 'source' => 'website',
-                'payment_channel' => $paymentChannel,
+                'payment_method' => 'midtrans_snap',
                 'applied_discount' => $service->has_active_discount ? [
                     'percentage' => $service->discount_percentage,
                     'label' => $service->discount_label,
@@ -55,10 +56,8 @@ class OrderController extends Controller
             ]),
         ]);
 
-        $payload = $this->qrisService->generatePayload($order);
-
-        $order->update([
-            'payment_token' => $payload['qr_string'],
+        $this->snapService->getOrCreateTransaction($order, [
+            'payment_channel' => null, // Enable all payment methods via Snap
         ]);
 
         return redirect()->route('orders.payment', $order->order_number)
@@ -67,12 +66,29 @@ class OrderController extends Controller
 
     public function payment(Order $order): View
     {
-        $paymentData = $this->qrisService->generatePayload($order);
+        $order->load('service');
+
+        $snapData = $this->snapService->getOrCreateTransaction($order, [
+            'payment_channel' => null, // Enable all payment methods
+        ]);
+
+        $snapExpiry = null;
+        $expiresAt = data_get($snapData, 'expires_at');
+
+        if ($expiresAt) {
+            try {
+                $snapExpiry = Carbon::parse($expiresAt);
+            } catch (\Throwable $exception) {
+                report($exception);
+            }
+        }
 
         return view('pages.orders.payment', [
-            'order' => $order->load('service'),
-            'paymentData' => $paymentData,
-            'selectedChannel' => data_get($order->metadata, 'payment_channel', 'qris'),
+            'order' => $order,
+            'snapData' => $snapData,
+            'snapToken' => data_get($snapData, 'token'),
+            'snapRedirectUrl' => data_get($snapData, 'redirect_url'),
+            'snapExpiry' => $snapExpiry,
         ]);
     }
 
